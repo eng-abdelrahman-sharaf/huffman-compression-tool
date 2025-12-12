@@ -63,7 +63,8 @@ public class Compressor {
         dos.writeByte(padding);
         for(Byte key : codes.keySet()) {
             dos.writeByte(key);
-            byte byteCode = (byte) Integer.parseInt(codes.get(key));
+            byte byteCode = (byte) Integer.parseInt(codes.get(key),2);
+            dos.writeByte(codes.get(key).length());
             dos.writeByte(byteCode);
         }
     }
@@ -81,9 +82,12 @@ public class Compressor {
             stringBuilder.append(currentByteCode);
         }
         dis.close();
+
+        int numOfBytes = (stringBuilder.length() + 7) / 8;
+        byte padding = (byte)( (8 - stringBuilder.length() % 8) % 8 );
+        stringBuilder.append("0".repeat(padding)); // add padding to the last of the string
+
         String fileCodes = stringBuilder.toString();
-        int numOfBytes = (fileCodes.length() + 7) / 8;
-        byte padding = (byte)( (8 - fileCodes.length() % 8) % 8 );
         byte[] bytes = new byte[numOfBytes];
         for(int i = 0; i < numOfBytes; i++) {
             String currentByte = fileCodes.substring(i*8, (i+1)*8);
