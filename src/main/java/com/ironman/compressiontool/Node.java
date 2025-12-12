@@ -1,10 +1,10 @@
 package com.ironman.compressiontool;
 
 public class Node {
-    private final byte value;
-    private final long frequency;
-    private final Node left;
-    private final Node right;
+    private Byte value;
+    private final Long frequency;
+    private Node left;
+    private Node right;
 
     public Node(byte value, long frequency) {
         this.value = value;
@@ -14,22 +14,29 @@ public class Node {
     }
 
     public Node( Node left, Node right) {
-        this.value = 0;
+        this.value = null;
         this.frequency = left.frequency + right.frequency;
         this.left = left;
         this.right = right;
     }
 
-    public byte getValue() {
+    public Node(){
+        this.value = null;
+        this.frequency = null;
+        this.left = null;
+        this.right = null;
+    }
+
+    public Byte getValue() {
         return value;
     }
 
-    public long getFrequency() {
+    public Long getFrequency() {
         return frequency;
     }
 
     public boolean isLeaf() {
-        return left == null && right == null;
+        return value != null;
     }
 
     public Node getLeft() {
@@ -37,5 +44,17 @@ public class Node {
     }
     public Node getRight() {
         return right;
+    }
+
+    public void setRight(Node right) {
+        this.right = right;
+    }
+
+    public void setLeft(Node left) {
+        this.left = left;
+    }
+
+    public void setValue(Byte value) {
+        this.value = value;
     }
 }
